@@ -1,0 +1,14 @@
+spring:
+  r2dbc:
+    url: r2dbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:testdb}
+    username: ${DB_USERNAME:testuser}
+    password: ${DB_PASSWORD:testpass}
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+logging:
+  level:
+    kr.co.dealmungchi: DEBUG
+    org.springframework.data.r2dbc: DEBUG

@@ -1,0 +1,31 @@
+spring:
+  profiles:
+    active:
+    - dev
+  application:
+    name: hotdealapi
+  r2dbc:
+    pool:
+      initial-size: 5
+      max-size: 20
+  webflux:
+    base-path: /
+  main:
+    web-application-type: reactive
+    
+logging:
+  level:
+    kr.co.dealmungchi: DEBUG
+    org.springframework.data.r2dbc: DEBUG
+    org.springframework.web.reactive: DEBUG
+
+server:
+  port: 9090
+  error:
+    include-stacktrace: never
+    include-message: always
+    whitelabel:
+      enabled: false
+    include-binding-errors: always
+      
+# Common settings above. Profile-specific settings in application-{profile}.yml files

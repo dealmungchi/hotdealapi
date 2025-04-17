@@ -1,0 +1,14 @@
+spring:
+  r2dbc:
+    url: r2dbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  sql:
+    init:
+      mode: never
+
+logging:
+  level:
+    kr.co.dealmungchi: INFO
+    org.springframework.data.r2dbc: WARN
+    root: WARN
