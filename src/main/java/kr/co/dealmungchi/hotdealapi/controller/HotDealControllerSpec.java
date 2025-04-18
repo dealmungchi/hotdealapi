@@ -1,7 +1,5 @@
 package kr.co.dealmungchi.hotdealapi.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -11,18 +9,20 @@ import kr.co.dealmungchi.hotdealapi.common.exception.ErrorCode;
 import kr.co.dealmungchi.hotdealapi.common.response.ApiResponse;
 import kr.co.dealmungchi.hotdealapi.config.swagger.ApiResponseSpec;
 import kr.co.dealmungchi.hotdealapi.dto.HotDealDto;
+import kr.co.dealmungchi.hotdealapi.dto.HotDealListResponse;
 import reactor.core.publisher.Mono;
 
 @Tag(name = "Hot Deal", description = "Hot Deal API")
 public interface HotDealControllerSpec {
 
     @ApiResponseSpec(
-        responseClass = List.class,
+        responseClass = HotDealListResponse.class,
         errorCodes = {ErrorCode.INVALID_REQUEST}
     )
-    Mono<ApiResponse<List<HotDealDto>>> getHotDeals(
-            @Parameter(description = "Page number (zero-based)") @RequestParam(defaultValue = "0") int page,
-            @Parameter(description = "Size of the page") @RequestParam(defaultValue = "20") int size);
+    Mono<ApiResponse<HotDealListResponse>> getHotDeals(
+            @Parameter(description = "Size of the page") @RequestParam(defaultValue = "20") int size,
+            @Parameter(description = "Cursor for infinite scroll (last ID from previous page)") 
+            @RequestParam(required = false) Long cursor);
 
     @ApiResponseSpec(
         responseClass = HotDealDto.class,

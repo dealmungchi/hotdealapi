@@ -9,7 +9,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import kr.co.dealmungchi.hotdealapi.common.response.ApiResponse;
 import kr.co.dealmungchi.hotdealapi.common.response.ErrorResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalRestExceptionHandler {
 
@@ -47,6 +49,8 @@ public class GlobalRestExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
   ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
+
+  log.error("GlobalRestExceptionHandler: handleGenericException", ex);
 
   return ResponseEntity
       .status(HttpStatus.INTERNAL_SERVER_ERROR)

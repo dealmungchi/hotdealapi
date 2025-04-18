@@ -1,7 +1,5 @@
 package kr.co.dealmungchi.hotdealapi.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.dealmungchi.hotdealapi.common.response.ApiResponse;
 import kr.co.dealmungchi.hotdealapi.dto.HotDealDto;
+import kr.co.dealmungchi.hotdealapi.dto.HotDealListResponse;
 import kr.co.dealmungchi.hotdealapi.service.HotDealService;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
@@ -23,12 +22,10 @@ public class HotDealController implements HotDealControllerSpec {
 
 	@Override
 	@GetMapping
-	public Mono<ApiResponse<List<HotDealDto>>> getHotDeals(
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size) {
-		return hotDealService.getHotDealsWithPagination(page, size)
-				.map(HotDealDto::fromEntity)
-				.collectList()
+	public Mono<ApiResponse<HotDealListResponse>> getHotDeals(
+			@RequestParam(defaultValue = "5") int size,
+			@RequestParam(required = false) Long cursor) {
+		return hotDealService.getHotDealsWithCursor(size, cursor)
 				.map(ApiResponse::success);
 	}
 

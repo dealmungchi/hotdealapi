@@ -1,17 +1,24 @@
 package kr.co.dealmungchi.hotdealapi.domain.repository;
 
-import kr.co.dealmungchi.hotdealapi.domain.entity.HotDeal;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.repository.Modifying;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
+
+import kr.co.dealmungchi.hotdealapi.domain.entity.HotDeal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
 public interface HotDealRepository extends ReactiveCrudRepository<HotDeal, Long> {
   Flux<HotDeal> findAllByOrderByIdDesc(Pageable pageable);
+  
+  @Query("SELECT * FROM hotdeals WHERE id < :cursor ORDER BY id DESC LIMIT :limit")
+  Flux<HotDeal> findByIdLessThanOrderByIdDesc(Long cursor, int limit);
+  
+  @Query("SELECT EXISTS(SELECT 1 FROM hotdeals WHERE id < :lastId LIMIT 1) as has_more")
+  Mono<Integer> checkExistsByIdLessThan(Long lastId);
   
   Mono<HotDeal> findByIdAndProviderId(Long id, Long providerId);
   

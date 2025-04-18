@@ -20,6 +20,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import kr.co.dealmungchi.hotdealapi.common.exception.ErrorCode;
 import kr.co.dealmungchi.hotdealapi.dto.DealCommentDto;
 import kr.co.dealmungchi.hotdealapi.dto.HotDealDto;
+import kr.co.dealmungchi.hotdealapi.dto.HotDealListResponse;
 
 public class ApiResponseCustomizer implements OperationCustomizer {
 
@@ -145,6 +146,8 @@ public class ApiResponseCustomizer implements OperationCustomizer {
                     dataSchema.setExample(SwaggerExampleGenerator.generateHotDealExample());
                 } else if (type.equals(DealCommentDto.class)) {
                     dataSchema.setExample(SwaggerExampleGenerator.generateDealCommentExample());
+                } else if (type.equals(HotDealListResponse.class)) {
+                    dataSchema.setExample(SwaggerExampleGenerator.generateHotDealListResponseExample());
                 }
             } else {
                 dataSchema = new Schema<>().type("object");
@@ -237,6 +240,8 @@ public class ApiResponseCustomizer implements OperationCustomizer {
                 schema.setExample(SwaggerExampleGenerator.generateHotDealExample());
             } else if (clazz.equals(DealCommentDto.class)) {
                 schema.setExample(SwaggerExampleGenerator.generateDealCommentExample());
+            } else if (clazz.equals(HotDealListResponse.class)) {
+                schema.setExample(SwaggerExampleGenerator.generateHotDealListResponseExample());
             }
 
             return schema;

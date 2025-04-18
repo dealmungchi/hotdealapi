@@ -23,6 +23,23 @@ public class HotDealDomainService {
 				.flatMap(this::attachProvider);
 	}
 
+	public Flux<HotDeal> findHotDealsWithCursor(Long cursor, int size) {
+		if (cursor == null) {
+			return findHotDealsWithPagination(0, size);
+		}
+		
+		return hotDealRepository.findByIdLessThanOrderByIdDesc(cursor, size)
+				.flatMap(this::attachProvider);
+	}
+	
+	public Mono<Boolean> hasMoreItems(Long lastId) {
+		if (lastId == null) {
+			return Mono.just(false);
+		}
+		return hotDealRepository.checkExistsByIdLessThan(lastId)
+		        .map(result -> result > 0);
+	}
+
 	public Mono<HotDeal> findHotDealById(Long id) {
 		return hotDealRepository.findById(id)
 				.switchIfEmpty(Mono.error(new DomainException(ErrorCode.HOTDEAL_NOT_FOUND)))

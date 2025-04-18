@@ -2,6 +2,7 @@ package kr.co.dealmungchi.hotdealapi.config.swagger;
 
 import kr.co.dealmungchi.hotdealapi.dto.DealCommentDto;
 import kr.co.dealmungchi.hotdealapi.dto.HotDealDto;
+import kr.co.dealmungchi.hotdealapi.dto.HotDealListResponse;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -47,6 +48,14 @@ public class SwaggerExampleGenerator {
                         .updatedAt(LocalDateTime.now())
                         .build()
         );
+    }
+    
+    /**
+     * Generates an example HotDealListResponse object for API documentation
+     */
+    public static HotDealListResponse generateHotDealListResponseExample() {
+        List<HotDealDto> content = generateHotDealListExample();
+        return HotDealListResponse.of(content, false, 20);
     }
 
     /**
