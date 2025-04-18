@@ -21,7 +21,7 @@ public class SwaggerConfig {
 						.version("v1.0"))
 				.servers(List.of(
 						new Server()
-								.url("https://api.dealmungchi.com")
+								.url("https://api.dealmungchi.co.kr")
 								.description("Production Server")));
 	}
 }
