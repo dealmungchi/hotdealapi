@@ -30,4 +30,13 @@ server:
       enabled: false
     include-binding-errors: always
       
+# Swagger/OpenAPI Configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+  packages-to-scan: kr.co.dealmungchi.hotdealapi.controller
+  paths-to-match: /api/**
+
 # Common settings above. Profile-specific settings in application-{profile}.yml files

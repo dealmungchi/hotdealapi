@@ -11,11 +11,11 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface HotDealRepository extends ReactiveCrudRepository<HotDeal, Long> {
-    Flux<HotDeal> findAllByOrderByIdDesc(Pageable pageable);
-    
-    Mono<HotDeal> findByIdAndProviderId(Long id, Long providerId);
-    
-    @Modifying
-    @Query("UPDATE hotdeals SET view_count = view_count + 1 WHERE id = :id")
-    Mono<Integer> incrementViewCount(Long id);
+  Flux<HotDeal> findAllByOrderByIdDesc(Pageable pageable);
+  
+  Mono<HotDeal> findByIdAndProviderId(Long id, Long providerId);
+  
+  @Modifying
+  @Query("UPDATE hotdeals SET view_count = view_count + 1 WHERE id = :id")
+  Mono<Integer> incrementViewCount(Long id);
 }

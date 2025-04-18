@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.4'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.springframework.boot' version '3.2.2'
+	id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'kr.co.dealmungchi'
@@ -24,11 +24,23 @@ dependencies {
 	implementation 'io.r2dbc:r2dbc-pool'
 	implementation 'io.asyncer:r2dbc-mysql:1.1.0'
 	implementation 'com.mysql:mysql-connector-j'
+	
+	// Swagger/OpenAPI 의존성 수정
+	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0'
+	implementation 'io.swagger.core.v3:swagger-annotations:2.2.20'
+	implementation 'io.swagger.core.v3:swagger-models:2.2.20'
+	implementation 'io.swagger.core.v3:swagger-core-jakarta:2.2.20'
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	compileOnly 'org.projectlombok:lombok:1.18.30'
-	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+	// Lombok 의존성 추가
+	compileOnly("org.projectlombok:lombok:1.18.38")
+	annotationProcessor("org.projectlombok:lombok:1.18.38")
+	
+	testCompileOnly("org.projectlombok:lombok:1.18.38")
+	testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 }
 
 tasks.named('test') {
