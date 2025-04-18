@@ -41,7 +41,7 @@ public class DealCommentController implements DealCommentControllerSpec {
 		DealComment comment = DealComment.builder()
 				.hotdealsId(hotDealId)
 				.parentId(request.parentId())
-				.userId(request.userId())
+				.userId(null) // TODO : 로그인 기능 추가 후 수정
 				.content(request.content())
 				.isDeleted(false)
 				.build();
