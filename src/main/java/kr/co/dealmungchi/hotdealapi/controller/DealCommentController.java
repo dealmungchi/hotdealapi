@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.dealmungchi.hotdealapi.common.response.ApiResponse;
 import kr.co.dealmungchi.hotdealapi.domain.entity.DealComment;
 import kr.co.dealmungchi.hotdealapi.dto.DealCommentDto;
@@ -51,6 +52,12 @@ public class DealCommentController implements DealCommentControllerSpec {
 				.map(ApiResponse::success);
 	}
 
-	public record CommentRequest(Long parentId, Long userId, String content) {
-	}
+	@Schema(description = "Comment creation request")
+	public record CommentRequest(
+		@Schema(description = "Parent comment ID", example = "1", required = false) 
+		Long parentId,
+		
+		@Schema(description = "Comment content", example = "이 제품 강추합니다! 배송도 빠르고 좋네요.", required = true) 
+		String content
+	) {}
 }
