@@ -9,6 +9,9 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.PathMatchConfigurer;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Configuration
 @EnableWebFlux
 public class WebConfig implements WebFluxConfigurer {
@@ -16,6 +19,7 @@ public class WebConfig implements WebFluxConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		String allowedOrigins = System.getenv("ALLOWED_ORIGINS");
+		log.info("allowedOrigins: {}", allowedOrigins);
 		String[] origins = allowedOrigins != null ? Arrays.stream(allowedOrigins.split(","))
 				.map(String::trim)
 				.toArray(String[]::new)
