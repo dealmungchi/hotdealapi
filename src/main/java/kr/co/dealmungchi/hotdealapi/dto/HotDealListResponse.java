@@ -14,7 +14,7 @@ public record HotDealListResponse(
     @Schema(description = "마지막 페이지 여부", example = "false") 
     boolean last,
     
-    @Schema(description = "페이지당 항목 수", example = "20") 
+    @Schema(description = "페이지당 항목 수", example = "5") 
     int size,
     
     @Schema(description = "다음 요청에 사용할 커서 ID (마지막 아이템의 ID)", example = "42") 
