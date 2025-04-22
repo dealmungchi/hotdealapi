@@ -11,4 +11,5 @@ logging:
   level:
     kr.co.dealmungchi: INFO
     org.springframework.data.r2dbc: WARN
+    org.springframework.web.reactive: WARN
     root: WARN
