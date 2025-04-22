@@ -22,6 +22,15 @@ public interface HotDealRepository extends ReactiveCrudRepository<HotDeal, Long>
   
   Mono<HotDeal> findByIdAndProviderId(Long id, Long providerId);
   
+  @Query("SELECT * FROM hotdeals WHERE provider_id = :providerId ORDER BY id DESC LIMIT :limit")
+  Flux<HotDeal> findByProviderIdOrderByIdDesc(Long providerId, int limit);
+  
+  @Query("SELECT * FROM hotdeals WHERE id < :cursor AND provider_id = :providerId ORDER BY id DESC LIMIT :limit")
+  Flux<HotDeal> findByIdLessThanAndProviderIdOrderByIdDesc(Long cursor, Long providerId, int limit);
+  
+  @Query("SELECT EXISTS(SELECT 1 FROM hotdeals WHERE id < :lastId AND provider_id = :providerId LIMIT 1) as has_more")
+  Mono<Integer> checkExistsByIdLessThanAndProviderId(Long lastId, Long providerId);
+  
   @Modifying
   @Query("UPDATE hotdeals SET view_count = view_count + 1 WHERE id = :id")
   Mono<Integer> incrementViewCount(Long id);

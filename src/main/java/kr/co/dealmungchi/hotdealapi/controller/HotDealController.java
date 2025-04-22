@@ -24,8 +24,9 @@ public class HotDealController implements HotDealControllerSpec {
 	@GetMapping
 	public Mono<ApiResponse<HotDealListResponse>> getHotDeals(
 			@RequestParam(defaultValue = "5") int size,
-			@RequestParam(required = false) Long cursor) {
-		return hotDealService.getHotDealsWithCursor(size, cursor)
+			@RequestParam(required = false) Long cursor,
+			@RequestParam(required = false, name = "provider_id") Long providerId) {
+		return hotDealService.getHotDealsWithCursor(size, cursor, providerId)
 				.map(ApiResponse::success);
 	}
 
@@ -33,7 +34,6 @@ public class HotDealController implements HotDealControllerSpec {
 	@GetMapping("/{id}")
 	public Mono<ApiResponse<HotDealDto>> getHotDealById(@PathVariable Long id) {
 		return hotDealService.getHotDealById(id)
-				.map(HotDealDto::fromEntity)
 				.map(ApiResponse::success);
 	}
 
@@ -41,7 +41,6 @@ public class HotDealController implements HotDealControllerSpec {
 	@PatchMapping("/{id}/view-count")
 	public Mono<ApiResponse<HotDealDto>> incrementViewCount(@PathVariable Long id) {
 		return hotDealService.incrementViewCount(id)
-				.map(HotDealDto::fromEntity)
 				.map(ApiResponse::success);
 	}
 }

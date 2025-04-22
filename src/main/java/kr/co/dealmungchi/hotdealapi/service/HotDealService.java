@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import kr.co.dealmungchi.hotdealapi.common.exception.BusinessException;
 import kr.co.dealmungchi.hotdealapi.common.exception.ErrorCode;
-import kr.co.dealmungchi.hotdealapi.domain.entity.HotDeal;
 import kr.co.dealmungchi.hotdealapi.domain.service.HotDealDomainService;
 import kr.co.dealmungchi.hotdealapi.dto.HotDealDto;
 import kr.co.dealmungchi.hotdealapi.dto.HotDealListResponse;
@@ -19,13 +18,17 @@ public class HotDealService {
 	private final HotDealDomainService hotDealDomainService;
 
 	public Mono<HotDealListResponse> getHotDealsWithCursor(int size, Long cursor) {
+		return getHotDealsWithCursor(size, cursor, null);
+	}
+
+	public Mono<HotDealListResponse> getHotDealsWithCursor(int size, Long cursor, Long providerId) {
 		try {
 			if (size <= 0 || size > 100) {
 				return Mono.error(new BusinessException(ErrorCode.INVALID_REQUEST,
 						"사이즈는 1-100 사이여야 합니다."));
 			}
 
-			return hotDealDomainService.findHotDealsWithCursor(cursor, size)
+			return hotDealDomainService.findHotDealsWithCursorAndProvider(cursor, size, providerId)
 					.map(HotDealDto::fromEntity)
 					.collectList()
 					.flatMap(hotDeals -> {
@@ -34,7 +37,7 @@ public class HotDealService {
 						}
 						
 						Long lastId = hotDeals.get(hotDeals.size() - 1).id();
-						return hotDealDomainService.hasMoreItems(lastId)
+						return hotDealDomainService.hasMoreItemsWithProvider(lastId, providerId)
 								.map(hasMore -> HotDealListResponse.of(hotDeals, !hasMore, size));
 					});
 		} catch (Exception e) {
@@ -43,26 +46,28 @@ public class HotDealService {
 		}
 	}
 
-	public Mono<HotDeal> getHotDealById(Long id) {
+	public Mono<HotDealDto> getHotDealById(Long id) {
 		try {
 			if (id == null || id <= 0) {
 				return Mono.error(new BusinessException(ErrorCode.INVALID_REQUEST, "유효하지 않은 ID입니다."));
 			}
 
-			return hotDealDomainService.findHotDealById(id);
+			return hotDealDomainService.findHotDealById(id)
+				.map(HotDealDto::fromEntity);
 		} catch (Exception e) {
 			log.error("Failed to get hot deal by id: {}", e.getMessage(), e);
 			return Mono.error(new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR));
 		}
 	}
 
-	public Mono<HotDeal> incrementViewCount(Long id) {
+	public Mono<HotDealDto> incrementViewCount(Long id) {
 		try {
 			if (id == null || id <= 0) {
 				return Mono.error(new BusinessException(ErrorCode.INVALID_REQUEST, "유효하지 않은 ID입니다."));
 			}
 
-			return hotDealDomainService.incrementViewCount(id);
+			return hotDealDomainService.incrementViewCount(id)
+				.map(HotDealDto::fromEntity);
 		} catch (Exception e) {
 			log.error("Failed to increment view count: {}", e.getMessage(), e);
 			return Mono.error(new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR));

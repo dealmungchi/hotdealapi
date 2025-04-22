@@ -28,17 +28,16 @@ public class ApiResponseCustomizer implements OperationCustomizer {
 
     @Override
     public Operation customize(Operation operation, HandlerMethod handlerMethod) {
-        Method method = handlerMethod.getMethod();
+        ApiResponseSpec apiResponseSpec = handlerMethod.getMethodAnnotation(ApiResponseSpec.class);
 
         // Add ApiResponseSpec annotation if present
-        ApiResponseSpec apiResponseSpec = method.getAnnotation(ApiResponseSpec.class);
         if (apiResponseSpec != null) {
-            customizeWithAnnotation(operation, apiResponseSpec, method);
+            customizeWithAnnotation(operation, apiResponseSpec, handlerMethod.getMethod());
             return operation;
         }
 
         // Default customization based on return type
-        return customizeBasedOnReturnType(operation, method);
+        return customizeBasedOnReturnType(operation, handlerMethod.getMethod());
     }
 
     private void customizeWithAnnotation(Operation operation, ApiResponseSpec apiResponseSpec, Method method) {
@@ -158,7 +157,7 @@ public class ApiResponseCustomizer implements OperationCustomizer {
 
         Map<String, Schema> properties = new HashMap<>();
         properties.put("data", dataSchema);
-        properties.put("error", new Schema<>().nullable(Boolean.TRUE).type("object"));
+        properties.put("error", new Schema<>().nullable(Boolean.TRUE).type("null"));
         properties.put("localDateTime", new Schema<>().type("string").example("2023-01-01 12:00:00"));
 
         Schema<?> schema = new Schema<>()
@@ -181,7 +180,7 @@ public class ApiResponseCustomizer implements OperationCustomizer {
                         "message", new Schema<>().type("string").example(errorCode.getMessage())));
 
         Map<String, Schema> properties = new HashMap<>();
-        properties.put("data", new Schema<>().nullable(Boolean.TRUE).type("object"));
+        properties.put("data", new Schema<>().nullable(Boolean.TRUE).type("null"));
         properties.put("error", errorSchema);
         properties.put("localDateTime", new Schema<>().type("string").example("2023-01-01 12:00:00"));
 

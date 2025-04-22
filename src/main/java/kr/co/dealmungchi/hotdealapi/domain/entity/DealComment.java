@@ -22,7 +22,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@lombok.Setter
 public class DealComment {
 	@Id
 	private Long id;
@@ -59,6 +58,10 @@ public class DealComment {
 
 	public boolean isReply() {
 		return parentId != null;
+	}
+
+	public void deleted() {
+		this.isDeleted = true;
 	}
 
 	public void validateExistence() {

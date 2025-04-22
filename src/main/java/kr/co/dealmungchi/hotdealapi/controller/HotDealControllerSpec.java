@@ -15,26 +15,23 @@ import reactor.core.publisher.Mono;
 @Tag(name = "Hot Deal", description = "Hot Deal API")
 public interface HotDealControllerSpec {
 
-    @ApiResponseSpec(
-        responseClass = HotDealListResponse.class,
-        errorCodes = {ErrorCode.INVALID_REQUEST}
-    )
-    Mono<ApiResponse<HotDealListResponse>> getHotDeals(
-            @Parameter(description = "Size of the page") @RequestParam(defaultValue = "20") int size,
-            @Parameter(description = "Cursor for infinite scroll (last ID from previous page)") 
-            @RequestParam(required = false) Long cursor);
+	@ApiResponseSpec(responseClass = HotDealListResponse.class, errorCodes = {
+			ErrorCode.INVALID_REQUEST
+	})
+	Mono<ApiResponse<HotDealListResponse>> getHotDeals(
+			@Parameter(description = "Size of the page") @RequestParam(defaultValue = "20") int size,
+			@Parameter(description = "Cursor for infinite scroll (last ID from previous page)") @RequestParam(required = false) Long cursor,
+			@Parameter(description = "Filter by provider ID") @RequestParam(required = false, name = "provider_id") Long providerId);
 
-    @ApiResponseSpec(
-        responseClass = HotDealDto.class,
-        errorCodes = {ErrorCode.HOTDEAL_NOT_FOUND, ErrorCode.RESOURCE_NOT_FOUND}
-    )
-    Mono<ApiResponse<HotDealDto>> getHotDealById(
-            @Parameter(description = "ID of the hot deal to retrieve") @PathVariable Long id);
+	@ApiResponseSpec(responseClass = HotDealDto.class, errorCodes = {
+			ErrorCode.HOTDEAL_NOT_FOUND,
+	})
+	Mono<ApiResponse<HotDealDto>> getHotDealById(
+			@Parameter(description = "ID of the hot deal to retrieve") @PathVariable Long id);
 
-    @ApiResponseSpec(
-        responseClass = HotDealDto.class,
-        errorCodes = {ErrorCode.HOTDEAL_NOT_FOUND, ErrorCode.RESOURCE_NOT_FOUND}
-    )
-    Mono<ApiResponse<HotDealDto>> incrementViewCount(
-            @Parameter(description = "ID of the hot deal") @PathVariable Long id);
+	@ApiResponseSpec(responseClass = HotDealDto.class, errorCodes = {
+			ErrorCode.HOTDEAL_NOT_FOUND,
+	})
+	Mono<ApiResponse<HotDealDto>> incrementViewCount(
+			@Parameter(description = "ID of the hot deal") @PathVariable Long id);
 }

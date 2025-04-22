@@ -27,17 +27,44 @@ public class HotDealDomainService {
 		if (cursor == null) {
 			return findHotDealsWithPagination(0, size);
 		}
-		
+
 		return hotDealRepository.findByIdLessThanOrderByIdDesc(cursor, size)
 				.flatMap(this::attachProvider);
 	}
-	
+
+	public Flux<HotDeal> findHotDealsWithCursorAndProvider(Long cursor, int size, Long providerId) {
+		if (providerId == null) {
+			return findHotDealsWithCursor(cursor, size);
+		}
+		
+		if (cursor == null) {
+			return hotDealRepository.findByProviderIdOrderByIdDesc(providerId, size)
+					.flatMap(this::attachProvider);
+		}
+
+		return hotDealRepository.findByIdLessThanAndProviderIdOrderByIdDesc(cursor, providerId, size)
+				.flatMap(this::attachProvider);
+	}
+
 	public Mono<Boolean> hasMoreItems(Long lastId) {
 		if (lastId == null) {
 			return Mono.just(false);
 		}
 		return hotDealRepository.checkExistsByIdLessThan(lastId)
-		        .map(result -> result > 0);
+				.map(result -> result > 0);
+	}
+
+	public Mono<Boolean> hasMoreItemsWithProvider(Long lastId, Long providerId) {
+		if (lastId == null) {
+			return Mono.just(false);
+		}
+		
+		if (providerId == null) {
+			return hasMoreItems(lastId);
+		}
+		
+		return hotDealRepository.checkExistsByIdLessThanAndProviderId(lastId, providerId)
+				.map(result -> result > 0);
 	}
 
 	public Mono<HotDeal> findHotDealById(Long id) {
