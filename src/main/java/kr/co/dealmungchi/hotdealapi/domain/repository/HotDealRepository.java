@@ -10,27 +10,27 @@ import kr.co.dealmungchi.hotdealapi.domain.entity.HotDeal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * HotDeal 엔티티에 대한 리포지토리 인터페이스
+ * 기본적인 CRUD 작업과 간단한 쿼리를 처리합니다.
+ * 복잡한 쿼리는 HotDealRepositoryCustom에 정의되어 있습니다.
+ */
 @Repository
-public interface HotDealRepository extends ReactiveCrudRepository<HotDeal, Long> {
+public interface HotDealRepository extends ReactiveCrudRepository<HotDeal, Long>, HotDealRepositoryCustom {
+  
+  /**
+   * ID 기준 내림차순으로 정렬된 핫딜 목록을 페이지네이션하여 조회합니다.
+   */
   Flux<HotDeal> findAllByOrderByIdDesc(Pageable pageable);
   
-  @Query("SELECT * FROM hotdeals WHERE id < :cursor ORDER BY id DESC LIMIT :limit")
-  Flux<HotDeal> findByIdLessThanOrderByIdDesc(Long cursor, int limit);
-  
-  @Query("SELECT EXISTS(SELECT 1 FROM hotdeals WHERE id < :lastId LIMIT 1) as has_more")
-  Mono<Integer> checkExistsByIdLessThan(Long lastId);
-  
+  /**
+   * 특정 프로바이더의 핫딜을 조회합니다.
+   */
   Mono<HotDeal> findByIdAndProviderId(Long id, Long providerId);
   
-  @Query("SELECT * FROM hotdeals WHERE provider_id = :providerId ORDER BY id DESC LIMIT :limit")
-  Flux<HotDeal> findByProviderIdOrderByIdDesc(Long providerId, int limit);
-  
-  @Query("SELECT * FROM hotdeals WHERE id < :cursor AND provider_id = :providerId ORDER BY id DESC LIMIT :limit")
-  Flux<HotDeal> findByIdLessThanAndProviderIdOrderByIdDesc(Long cursor, Long providerId, int limit);
-  
-  @Query("SELECT EXISTS(SELECT 1 FROM hotdeals WHERE id < :lastId AND provider_id = :providerId LIMIT 1) as has_more")
-  Mono<Integer> checkExistsByIdLessThanAndProviderId(Long lastId, Long providerId);
-  
+  /**
+   * 조회수를 1 증가시킵니다.
+   */
   @Modifying
   @Query("UPDATE hotdeals SET view_count = view_count + 1 WHERE id = :id")
   Mono<Integer> incrementViewCount(Long id);

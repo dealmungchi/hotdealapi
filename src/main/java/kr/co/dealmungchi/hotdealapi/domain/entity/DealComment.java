@@ -1,11 +1,9 @@
 package kr.co.dealmungchi.hotdealapi.domain.entity;
 
-import kr.co.dealmungchi.hotdealapi.common.exception.DomainException;
-import kr.co.dealmungchi.hotdealapi.common.exception.ErrorCode;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,9 +11,12 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import kr.co.dealmungchi.hotdealapi.common.exception.DomainException;
+import kr.co.dealmungchi.hotdealapi.common.exception.ErrorCode;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Table("deal_comments")
 @Getter
@@ -50,7 +51,7 @@ public class DealComment {
 	private LocalDateTime updatedAt;
 
 	@Transient
-	private List<DealComment> replies = new ArrayList<>();
+	private List<DealComment> replies;
 
 	public void setReplies(List<DealComment> replies) {
 		this.replies = replies != null ? replies : new ArrayList<>();
