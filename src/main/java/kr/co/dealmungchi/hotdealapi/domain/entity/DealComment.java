@@ -51,10 +51,11 @@ public class DealComment {
 	private LocalDateTime updatedAt;
 
 	@Transient
-	private List<DealComment> replies;
+	private final List<DealComment> replies = new ArrayList<>();
 
 	public void setReplies(List<DealComment> replies) {
-		this.replies = replies != null ? replies : new ArrayList<>();
+		this.replies.clear();
+		this.replies.addAll(replies);
 	}
 
 	public boolean isReply() {
