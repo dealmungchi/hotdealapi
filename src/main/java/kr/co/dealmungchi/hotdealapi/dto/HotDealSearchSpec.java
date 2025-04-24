@@ -32,8 +32,8 @@ public class HotDealSearchSpec {
      * 유효성 검사
      */
     public HotDealSearchSpec validate() {
-        if (size <= 0 || size > 20) {
-            throw new IllegalArgumentException("Size must be between 1 and 20");
+        if (size <= 0 || size > 30) {
+            throw new IllegalArgumentException("Size must be between 1 and 30");
         }
         return this;
     }

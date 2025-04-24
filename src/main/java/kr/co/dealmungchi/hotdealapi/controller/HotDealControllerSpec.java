@@ -19,7 +19,7 @@ public interface HotDealControllerSpec {
 			ErrorCode.INVALID_REQUEST
 	})
 	Mono<ApiResponse<HotDealListResponse>> getHotDeals(
-			@Parameter(description = "Size of the page") @RequestParam(defaultValue = "20") int size,
+			@Parameter(description = "Size of the page") @RequestParam(defaultValue = "5") int size,
 			@Parameter(description = "Cursor for infinite scroll (last ID from previous page)") @RequestParam(required = false) Long cursor,
 			@Parameter(description = "Filter by provider ID") @RequestParam(required = false, name = "provider_id") Long providerId);
 

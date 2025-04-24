@@ -15,46 +15,47 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class GlobalRestExceptionHandler {
 
-  @ExceptionHandler(ResponseStatusException.class)
-  public ResponseEntity<ApiResponse<Void>> handleNotFound(ResponseStatusException ex) {
-  if (ex.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
-    ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.RESOURCE_NOT_FOUND);
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNotFound(ResponseStatusException ex) {
+        if (ex.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
+            ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.RESOURCE_NOT_FOUND);
 
-    return ResponseEntity
-        .status(errorResponse.status())
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(ApiResponse.failure(errorResponse));
-  }
+            return ResponseEntity
+                    .status(errorResponse.status())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(ApiResponse.failure(errorResponse));
+        }
 
-  String code = ex.getStatusCode().is4xxClientError() ? "CLIENT_ERROR"
-      : ex.getStatusCode().is5xxServerError() ? "SERVER_ERROR" : "UNKNOWN_ERROR";
+        String code = ex.getStatusCode().is4xxClientError() ? "CLIENT_ERROR"
+                : ex.getStatusCode().is5xxServerError() ? "SERVER_ERROR" : "UNKNOWN_ERROR";
 
-  return ResponseEntity
-      .status(ex.getStatusCode())
-      .contentType(MediaType.APPLICATION_JSON)
-      .body(ApiResponse.failure(
-          new ErrorResponse(ex.getStatusCode().value(), code, ex.getReason())));
-  }
+        return ResponseEntity
+                .status(ex.getStatusCode())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(ApiResponse.failure(
+                        new ErrorResponse(ex.getStatusCode().value(), code, ex.getReason())));
+    }
 
-  @ExceptionHandler(BaseException.class)
-  public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException ex) {
-  ErrorResponse errorResponse = ErrorResponse.of(ex.getErrorCode());
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException ex) {
+        ErrorCode errorCode = ex.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(), errorCode.getMessage());
 
-  return ResponseEntity
-      .status(errorResponse.status())
-      .contentType(MediaType.APPLICATION_JSON)
-      .body(ApiResponse.failure(errorResponse));
-  }
+        return ResponseEntity
+                .status(errorResponse.status())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(ApiResponse.failure(errorResponse));
+    }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
-  ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
 
-  log.error("GlobalRestExceptionHandler: handleGenericException", ex);
+        log.error("GlobalRestExceptionHandler: handleGenericException", ex);
 
-  return ResponseEntity
-      .status(HttpStatus.INTERNAL_SERVER_ERROR)
-      .contentType(MediaType.APPLICATION_JSON)
-      .body(ApiResponse.failure(errorResponse));
-  }
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(ApiResponse.failure(errorResponse));
+    }
 }
