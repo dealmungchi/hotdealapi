@@ -39,7 +39,7 @@ public class GlobalRestExceptionHandler {
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException ex) {
         ErrorCode errorCode = ex.getErrorCode();
-        ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(), errorCode.getMessage());
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(), ex.getMessage());
 
         return ResponseEntity
                 .status(errorResponse.status())
