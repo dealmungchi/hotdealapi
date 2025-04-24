@@ -34,6 +34,10 @@ public class HotDealRepositoryImpl implements HotDealRepositoryCustom {
     if (spec.hasProviderFilter()) {
       criteria = criteria.and("provider_id").is(spec.getProviderId());
     }
+    
+    if (spec.hasKeyword()) {
+      criteria = criteria.and("title").like("%" + spec.getKeyword() + "%");
+    }
 
     // Query 객체로 변환
     Query query = Query.query(criteria)
@@ -53,6 +57,10 @@ public class HotDealRepositoryImpl implements HotDealRepositoryCustom {
 
     if (spec.hasProviderFilter()) {
       criteria = criteria.and("provider_id").is(spec.getProviderId());
+    }
+    
+    if (spec.hasKeyword()) {
+      criteria = criteria.and("title").like("%" + spec.getKeyword() + "%");
     }
 
     // 결과 존재 여부 확인을 위한 쿼리 생성

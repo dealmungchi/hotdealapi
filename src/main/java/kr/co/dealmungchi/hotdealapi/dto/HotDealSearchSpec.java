@@ -29,6 +29,11 @@ public class HotDealSearchSpec {
     private final Long providerId;
     
     /**
+     * 검색 키워드 (제목 검색)
+     */
+    private final String keyword;
+    
+    /**
      * 유효성 검사
      */
     public HotDealSearchSpec validate() {
@@ -50,5 +55,12 @@ public class HotDealSearchSpec {
      */
     public boolean hasProviderFilter() {
         return providerId != null;
+    }
+    
+    /**
+     * 검색 키워드가 적용되었는지 확인
+     */
+    public boolean hasKeyword() {
+        return keyword != null && !keyword.isBlank();
     }
 } 

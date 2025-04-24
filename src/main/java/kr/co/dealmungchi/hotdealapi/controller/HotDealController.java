@@ -28,13 +28,15 @@ public class HotDealController implements HotDealControllerSpec {
 	public Mono<ApiResponse<HotDealListResponse>> getHotDeals(
 			@RequestParam(defaultValue = "5") int size,
 			@RequestParam(required = false) Long cursor,
-			@RequestParam(required = false, name = "provider_id") Long providerId) {
+			@RequestParam(required = false, name = "provider_id") Long providerId,
+			@RequestParam(required = false) String keyword) {
 		
 		// HotDealSearchSpec 생성
 		HotDealSearchSpec searchSpec = HotDealSearchSpec.builder()
 				.cursor(cursor)
 				.size(size)
 				.providerId(providerId)
+				.keyword(keyword)
 				.build();
 		
 		// 유효성 검사 및 처리
