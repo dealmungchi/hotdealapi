@@ -33,7 +33,7 @@ public class HotDealDomainService {
 	 */
 	public Flux<HotDeal> findHotDealsBySpec(HotDealSearchSpec spec) {
 		return hotDealRepository.findBySpec(spec)
-				.flatMap(this::attachProvider);
+				.concatMap(this::attachProvider);
 	}
 	
 	/**
