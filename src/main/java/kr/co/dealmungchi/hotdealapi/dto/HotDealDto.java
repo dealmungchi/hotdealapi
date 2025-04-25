@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.dealmungchi.hotdealapi.domain.entity.HotDeal;
-import kr.co.dealmungchi.hotdealapi.domain.entity.Provider.ProviderType;
 import lombok.Builder;
 
 @Builder
@@ -30,7 +29,7 @@ public record HotDealDto(
 ) {
     public static HotDealDto fromEntity(HotDeal entity) {
         String thumbnailLink = null;
-        if (entity.getThumbnailHash() != null && !ProviderType.BBASAK.equals(entity.getProvider().getProviderType())) { // TODO : worker 에서 레퍼러 설정으로 가능한지 확인
+        if (entity.getThumbnailHash() != null) {
             thumbnailLink = System.getenv("STATIC_URL") + "/thumbnail/" + entity.getThumbnailHash().substring(0, 2) + "/" + entity.getThumbnailHash();
         }
 
