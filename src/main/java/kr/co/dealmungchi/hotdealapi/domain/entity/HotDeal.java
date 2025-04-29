@@ -49,6 +49,9 @@ public class HotDeal {
 	@Column("provider_id")
 	private Long providerId;
 
+	@Column("category_id")
+	private Long categoryId;
+
 	@Column("view_count")
 	private Long viewCount;
 
@@ -62,6 +65,9 @@ public class HotDeal {
 
 	@Transient
 	private Provider provider;
+
+	@Transient
+	private Category category;
 
 	public void setProvider(Provider provider) {
 		this.provider = provider;

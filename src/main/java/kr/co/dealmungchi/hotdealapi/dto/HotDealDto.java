@@ -20,6 +20,8 @@ public record HotDealDto(
     String price,
     @Schema(description = "핫딜 프로바이더 ID", example = "1")
     Long providerId,
+    @Schema(description = "핫딜 카테고리 ID", example = "1")
+    Long categoryId,
     @Schema(description = "핫딜 조회수", example = "100")
     Long viewCount,
     @Schema(description = "핫딜 생성일", example = "2025-01-01 10:00:00")
@@ -40,6 +42,7 @@ public record HotDealDto(
                 .thumbnailLink(thumbnailLink)
                 .price(entity.getPrice())
                 .providerId(entity.getProviderId())
+                .categoryId(entity.getCategoryId())
                 .viewCount(entity.getViewCount())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
