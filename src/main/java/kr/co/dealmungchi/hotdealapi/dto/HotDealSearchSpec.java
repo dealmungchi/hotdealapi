@@ -1,9 +1,13 @@
 package kr.co.dealmungchi.hotdealapi.dto;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 핫딜 검색에 필요한 조건을 담는 Spec DTO
@@ -11,55 +15,44 @@ import lombok.Data;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
 @Builder
+@Getter
+@Setter
+@Schema(description = "핫딜 검색 조건")
 public class HotDealSearchSpec {
     
-    /**
-     * 커서 기반 페이징을 위한 기준점 ID
-     */
-    private final Long cursor;
+    @Parameter(description = "커서 ID (페이징에 사용): null이면 최신순 조회", example = "1000")
+    private Long cursor;
     
-    /**
-     * 페이지 사이즈 (기본값: 5)
-     */
-    private final int size;
+    @Parameter(description = "페이지 크기 (1-30)", schema = @Schema(minimum = "1", maximum = "30"), example = "20")
+    private Integer size;
     
-    /**
-     * 프로바이더 ID 필터 (옵션)
-     */
-    private final Long providerId;
+    @Parameter(description = "제공자 ID (선택 사항): 필터링에 사용", example = "1")
+    private Long providerId;
     
-    /**
-     * 검색 키워드 (제목 검색)
-     */
-    private final String keyword;
+    @Parameter(description = "카테고리 ID (선택 사항): 필터링에 사용", example = "1")
+    private Long categoryId;
     
-    /**
-     * 유효성 검사
-     */
-    public HotDealSearchSpec validate() {
-        if (size <= 0 || size > 30) {
-            throw new IllegalArgumentException("Size must be between 1 and 30");
+    @Parameter(description = "검색 키워드 (선택 사항): 제목 내 포함 검색", example = "노트북")
+    private String keyword;
+    
+    public void validate() {
+        if (size == null || size < 1 || size > 30) {
+            throw new IllegalArgumentException("Invalid size: " + size);
         }
-        return this;
     }
     
-    /**
-     * 커서가 있는지 확인
-     */
     public boolean hasCursor() {
-        return cursor != null;
+        return cursor != null && cursor > 0;
     }
     
-    /**
-     * Provider 필터가 적용되었는지 확인
-     */
     public boolean hasProviderFilter() {
-        return providerId != null;
+        return providerId != null && providerId > 0;
     }
     
-    /**
-     * 검색 키워드가 적용되었는지 확인
-     */
+    public boolean hasCategoryFilter() {
+        return categoryId != null && categoryId > 0;
+    }
+    
     public boolean hasKeyword() {
         return keyword != null && !keyword.isBlank();
     }

@@ -35,6 +35,10 @@ public class HotDealRepositoryImpl implements HotDealRepositoryCustom {
       criteria = criteria.and("provider_id").is(spec.getProviderId());
     }
     
+    if (spec.hasCategoryFilter()) {
+      criteria = criteria.and("category_id").is(spec.getCategoryId());
+    }
+
     if (spec.hasKeyword()) {
       criteria = criteria.and("title").like("%" + spec.getKeyword() + "%");
     }
@@ -58,7 +62,11 @@ public class HotDealRepositoryImpl implements HotDealRepositoryCustom {
     if (spec.hasProviderFilter()) {
       criteria = criteria.and("provider_id").is(spec.getProviderId());
     }
-    
+
+    if (spec.hasCategoryFilter()) {
+      criteria = criteria.and("category_id").is(spec.getCategoryId());
+    }
+
     if (spec.hasKeyword()) {
       criteria = criteria.and("title").like("%" + spec.getKeyword() + "%");
     }

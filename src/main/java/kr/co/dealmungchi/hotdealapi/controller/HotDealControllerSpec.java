@@ -32,6 +32,9 @@ public interface HotDealControllerSpec {
 			
 			@Parameter(description = "Filter by provider ID", example = "1") 
 			@RequestParam(required = false, name = "provider_id") Long providerId,
+
+			@Parameter(description = "Filter by category ID", example = "1") 
+			@RequestParam(required = false) Long categoryId,
 			
 			@Parameter(description = "Search by keyword in title", example = "노트북") 
 			@RequestParam(required = false) String keyword);
