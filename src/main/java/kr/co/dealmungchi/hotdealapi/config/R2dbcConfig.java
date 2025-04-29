@@ -13,6 +13,7 @@ import org.springframework.data.r2dbc.dialect.DialectResolver;
 import org.springframework.data.r2dbc.dialect.R2dbcDialect;
 
 import io.r2dbc.spi.ConnectionFactory;
+import kr.co.dealmungchi.hotdealapi.domain.entity.Category.CategoryType;
 import kr.co.dealmungchi.hotdealapi.domain.entity.Provider.ProviderType;
 
 @Configuration
@@ -24,6 +25,8 @@ public class R2dbcConfig {
 		List<Converter<?, ?>> converters = new ArrayList<>();
 		converters.add(new ProviderTypeToStringConverter());
 		converters.add(new StringToProviderTypeConverter());
+		converters.add(new CategoryTypeToStringConverter());
+		converters.add(new StringToCategoryTypeConverter());
 		return R2dbcCustomConversions.of(dialect, converters);
 	}
 
@@ -40,6 +43,22 @@ public class R2dbcConfig {
 		@Override
 		public ProviderType convert(String source) {
 			return ProviderType.valueOf(source);
+		}
+	}
+	
+	@WritingConverter
+	static class CategoryTypeToStringConverter implements Converter<CategoryType, String> {
+		@Override
+		public String convert(CategoryType source) {
+			return source.name();
+		}
+	}
+
+	@ReadingConverter
+	static class StringToCategoryTypeConverter implements Converter<String, CategoryType> {
+		@Override
+		public CategoryType convert(String source) {
+			return CategoryType.valueOf(source);
 		}
 	}
 }
