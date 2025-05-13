@@ -28,7 +28,7 @@ public class HotDealController implements HotDealControllerSpec {
 	public Mono<ApiResponse<HotDealListResponse>> getHotDeals(
 			@RequestParam(defaultValue = "5") int size,
 			@RequestParam(required = false) Long cursor,
-			@RequestParam(required = false, name = "provider_id") Long providerId,
+			@RequestParam(required = false) Long providerId,
 			@RequestParam(required = false) Long categoryId,
 			@RequestParam(required = false) String keyword) {
 		

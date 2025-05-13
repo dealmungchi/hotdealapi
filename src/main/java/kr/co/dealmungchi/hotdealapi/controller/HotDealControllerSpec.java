@@ -31,7 +31,7 @@ public interface HotDealControllerSpec {
 			@RequestParam(required = false) Long cursor,
 			
 			@Parameter(description = "Filter by provider ID", example = "1") 
-			@RequestParam(required = false, name = "provider_id") Long providerId,
+			@RequestParam(required = false) Long providerId,
 
 			@Parameter(description = "Filter by category ID", example = "1") 
 			@RequestParam(required = false) Long categoryId,
