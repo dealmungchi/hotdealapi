@@ -33,12 +33,12 @@ public class HotDealController implements HotDealControllerSpec {
 	public Mono<ApiResponse<HotDealListResponse>> getHotDeals(
 			@RequestParam(defaultValue = "5") int size,
 			@RequestParam(required = false) Long cursor,
-			@RequestParam(required = false) String providerIds,
-			@RequestParam(required = false) String categoryIds,
+			@RequestParam(required = false) String providerId,
+			@RequestParam(required = false) String categoryId,
 			@RequestParam(required = false) String keyword) {
 		
-		List<Long> providerIdList = parseIdList(providerIds);
-		List<Long> categoryIdList = parseIdList(categoryIds);
+		List<Long> providerIdList = parseIdList(providerId);
+		List<Long> categoryIdList = parseIdList(categoryId);
 		
 		// HotDealSearchSpec 생성
 		HotDealSearchSpec searchSpec = HotDealSearchSpec.builder()
