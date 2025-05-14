@@ -26,11 +26,11 @@ public class HotDealSearchSpec {
     @Parameter(description = "페이지 크기 (1-30)", schema = @Schema(minimum = "1", maximum = "30"), example = "20")
     private Integer size;
     
-    @Parameter(description = "제공자 ID (선택 사항): 필터링에 사용", example = "1")
-    private Long providerId;
+    @Parameter(description = "제공자 ID 목록 (선택 사항, 콤마로 구분): 필터링에 사용", example = "1,2,3")
+    private java.util.List<Long> providerIds;
     
-    @Parameter(description = "카테고리 ID (선택 사항): 필터링에 사용", example = "1")
-    private Long categoryId;
+    @Parameter(description = "카테고리 ID 목록 (선택 사항, 콤마로 구분): 필터링에 사용", example = "1,2,3")
+    private java.util.List<Long> categoryIds;
     
     @Parameter(description = "검색 키워드 (선택 사항): 제목 내 포함 검색", example = "노트북")
     private String keyword;
@@ -46,11 +46,11 @@ public class HotDealSearchSpec {
     }
     
     public boolean hasProviderFilter() {
-        return providerId != null && providerId > 0;
+        return providerIds != null && !providerIds.isEmpty();
     }
     
     public boolean hasCategoryFilter() {
-        return categoryId != null && categoryId > 0;
+        return categoryIds != null && !categoryIds.isEmpty();
     }
     
     public boolean hasKeyword() {

@@ -32,11 +32,11 @@ public class HotDealRepositoryImpl implements HotDealRepositoryCustom {
     }
 
     if (spec.hasProviderFilter()) {
-      criteria = criteria.and("provider_id").is(spec.getProviderId());
+      criteria = criteria.and("provider_id").in(spec.getProviderIds());
     }
     
     if (spec.hasCategoryFilter()) {
-      criteria = criteria.and("category_id").is(spec.getCategoryId());
+      criteria = criteria.and("category_id").in(spec.getCategoryIds());
     }
 
     if (spec.hasKeyword()) {
@@ -60,11 +60,11 @@ public class HotDealRepositoryImpl implements HotDealRepositoryCustom {
     Criteria criteria = Criteria.where("id").lessThan(lastId);
 
     if (spec.hasProviderFilter()) {
-      criteria = criteria.and("provider_id").is(spec.getProviderId());
+      criteria = criteria.and("provider_id").in(spec.getProviderIds());
     }
 
     if (spec.hasCategoryFilter()) {
-      criteria = criteria.and("category_id").is(spec.getCategoryId());
+      criteria = criteria.and("category_id").in(spec.getCategoryIds());
     }
 
     if (spec.hasKeyword()) {

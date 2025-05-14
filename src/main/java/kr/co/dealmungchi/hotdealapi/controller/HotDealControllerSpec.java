@@ -30,11 +30,11 @@ public interface HotDealControllerSpec {
 			@Parameter(description = "Cursor for infinite scroll (last ID from previous page)", example = "42") 
 			@RequestParam(required = false) Long cursor,
 			
-			@Parameter(description = "Filter by provider ID", example = "1") 
-			@RequestParam(required = false) Long providerId,
+			@Parameter(description = "Filter by provider IDs (comma separated)", example = "1,2,3") 
+			@RequestParam(required = false) String providerIds,
 
-			@Parameter(description = "Filter by category ID", example = "1") 
-			@RequestParam(required = false) Long categoryId,
+			@Parameter(description = "Filter by category IDs (comma separated)", example = "1,2,3") 
+			@RequestParam(required = false) String categoryIds,
 			
 			@Parameter(description = "Search by keyword in title", example = "노트북") 
 			@RequestParam(required = false) String keyword);

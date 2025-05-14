@@ -1,5 +1,9 @@
 package kr.co.dealmungchi.hotdealapi.controller;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,21 +27,25 @@ import reactor.core.publisher.Mono;
 public class HotDealController implements HotDealControllerSpec {
 	private final HotDealService hotDealService;
 
+	// TODO : handler method argument resolver 사용
 	@Override
 	@GetMapping
 	public Mono<ApiResponse<HotDealListResponse>> getHotDeals(
 			@RequestParam(defaultValue = "5") int size,
 			@RequestParam(required = false) Long cursor,
-			@RequestParam(required = false) Long providerId,
-			@RequestParam(required = false) Long categoryId,
+			@RequestParam(required = false) String providerIds,
+			@RequestParam(required = false) String categoryIds,
 			@RequestParam(required = false) String keyword) {
+		
+		List<Long> providerIdList = parseIdList(providerIds);
+		List<Long> categoryIdList = parseIdList(categoryIds);
 		
 		// HotDealSearchSpec 생성
 		HotDealSearchSpec searchSpec = HotDealSearchSpec.builder()
 				.cursor(cursor)
 				.size(size)
-				.providerId(providerId)
-				.categoryId(categoryId)
+				.providerIds(providerIdList)
+				.categoryIds(categoryIdList)
 				.keyword(keyword)
 				.build();
 		
@@ -48,6 +56,19 @@ public class HotDealController implements HotDealControllerSpec {
 					.map(ApiResponse::success);
 		} catch (IllegalArgumentException e) {
 			return Mono.error(new BusinessException(ErrorCode.INVALID_REQUEST, e.getMessage()));
+		}
+	}
+
+	private List<Long> parseIdList(String ids) {
+		if (ids == null || ids.isBlank()) return Collections.emptyList();
+		try {
+			return Arrays.stream(ids.split(","))
+					.map(String::trim)
+					.filter(s -> !s.isEmpty())
+					.map(Long::parseLong)
+					.toList();
+		} catch (NumberFormatException e) {
+			throw new BusinessException(ErrorCode.INVALID_REQUEST, "ID 목록 형식이 잘못되었습니다: " + ids);
 		}
 	}
 
